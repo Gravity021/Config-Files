@@ -1,4 +1,8 @@
--- Native nvim configurations
+-- Install other config modules
+require("plugins")
+require("keybinds")
+
+-- Native NeoVim configurations
 local set = vim.opt
 
 set.compatible = false				-- Disable compatibility to old-time vi
@@ -28,32 +32,18 @@ set.splitbelow = true				-- Open new split panes below
 
 set.termguicolors = true			-- Keep consistant colouring
 
--- Nvim Plugins (using vim-plug)
-local Plug = vim.fn["plug#"]
-
-vim.call("plug#begin")
-	-- Colourschemes
-	Plug("dracula/vim")				-- Dracula colourscheme
-	
-	-- Tools
-	Plug("mhinz/vim-startify")		-- Startify first screen
-	
-	-- Utils
-	Plug("ryanoasis/vim-devicons")	-- Devicons 
-vim.call("plug#end")
+-- Plugins
+vim.cmd([[
+	  augroup packer_user_config
+		autocmd!
+		autocmd BufWritePost plugins.lua source <afile> | PackerCompile
+	  augroup end
+	]])
+installPlugins()
 
 -- Set colorschemes
 vim.cmd[[silent! colorscheme dracula]]
 --vim.cmd[[silent! colorscheme default]]
 
 -- Keybinds
-function map(mode, lhs, rhs, opts)
-    local options = { noremap = true }
-    if opts then
-        options = vim.tbl_extend("force", options, opts)
-    end
-    vim.api.nvim_set_keymap(mode, lhs, rhs, options)
-end
-
-map("n", ":s", ":so $MYVIMRC") 		-- Fast reload of the config file
-map("n", ":Q", ":q!")				-- Exit without saving
+mapKeybinds()
