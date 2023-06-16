@@ -4,24 +4,9 @@ require("plugins")
 require("keybinds")
 require("lsp")
 
--- Options
-configureOpts()
-
--- Plugins
-installPlugins()
-vim.cmd([[
-	  augroup packer_user_config
-		autocmd!
-		autocmd BufWritePost plugins.lua source <afile> | PackerCompile
-	  augroup end
-	]])
+-- Set Neotree to show on startup
+vim.api.nvim_create_autocmd({"VimEnter"}, {command = "Neotree action=show"})
 
 -- Set colorschemes
 --vim.cmd[[silent! colorscheme dracula]]
 vim.cmd[[silent! colorscheme tokyonight]]
-
--- Keybinds
-mapKeybinds()
-
--- LSP
-configureLSP()
